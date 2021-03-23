@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import CreateUserService from '../services/CreateUserService';
-import ListUserService from '../services/ListUserService';
+import CreateUserService from '../../../services/CreateUserService';
+import ListUserService from '../../../services/ListUserService';
 import { classToClass } from 'class-transformer';
 
 export default class UsersController {
