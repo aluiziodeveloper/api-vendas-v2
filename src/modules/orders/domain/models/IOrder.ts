@@ -1,6 +1,5 @@
 import { ICustomer } from '@modules/customers/domain/models/ICustomer';
 import { ICreateOrderProducts } from './ICreateOrderProducts';
-import { IOrderProducts } from './IOrderProducts';
 
 export interface IOrder {
   id: string;
