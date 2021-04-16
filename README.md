@@ -28,7 +28,7 @@ A ideia é que possamos ao longo do tempo incluir novas funcionalidades, simular
 Faça um clone deste repositório e instale no seu ambiente de desenvolvimento usando o seguinte comando no seu terminal (escolha um diretório apropriado):
 
 ```
-git clone https://github.com/aluiziodeveloper/api-vendas.git
+git clone https://github.com/aluiziodeveloper/api-vendas-v2.git
 ```
 
 Após clonar o conteúdo do repositório, acesse o diretório criado e efetue a instalação das dependências:
@@ -48,7 +48,5 @@ Após essa instalação execute a aplicação com o comando `yarn dev` ou `npm r
 ## Contato
 
 [Site Aluizio Developer](https://aluiziodeveloper.com.br)
-
-[Instagram](https://www.instagram.com/smartcontacts/)
 
 [YouTube](https://www.youtube.com/jorgealuizio)
