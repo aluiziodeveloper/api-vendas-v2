@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ICreateCustomer } from '@modules/customers/domain/models/ICreateCustomer';
 import { ICustomersRepository } from '@modules/customers/domain/repositories/ICustomersRepository';
 import Customer from '@modules/customers/infra/typeorm/entities/Customer';
+import { ICustomerPaginate } from '../../models/ICustomerPaginate';
 
 class FakeCustomersRepository implements ICustomersRepository {
   private customers: Customer[] = [];
@@ -32,6 +33,21 @@ class FakeCustomersRepository implements ICustomersRepository {
 
   public async findAll(): Promise<Customer[] | undefined> {
     return undefined;
+  }
+
+  public async findAllPaginate(): Promise<ICustomerPaginate> {
+    const customersPaginate = {
+      from: 1,
+      to: 1,
+      per_page: 1,
+      total: 1,
+      current_page: 1,
+      prev_page: null,
+      next_page: null,
+      data: this.customers,
+    };
+
+    return customersPaginate;
   }
 
   public async findByName(name: string): Promise<Customer | undefined> {
