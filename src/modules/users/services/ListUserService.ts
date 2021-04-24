@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { IUser } from '../domain/models/IUser';
+import { IPaginateUser } from '../domain/models/IPaginateUser';
 import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 
 @injectable()
@@ -9,8 +9,8 @@ class ListUserService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute(): Promise<IUser[]> {
-    const users = this.usersRepository.findAll();
+  public async execute(): Promise<IPaginateUser> {
+    const users = await this.usersRepository.findAllPaginate();
 
     return users;
   }

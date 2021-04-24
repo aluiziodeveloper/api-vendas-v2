@@ -1,4 +1,5 @@
 import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
+import { IPaginateUser } from '@modules/users/domain/models/IPaginateUser';
 import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
 import { getRepository, Repository } from 'typeorm';
 import User from '../entities/User';
@@ -28,6 +29,12 @@ class UsersRepository implements IUsersRepository {
     const users = await this.ormRepository.find();
 
     return users;
+  }
+
+  public async findAllPaginate(): Promise<IPaginateUser> {
+    const users = await this.ormRepository.createQueryBuilder().paginate();
+
+    return users as IPaginateUser;
   }
 
   public async findByName(name: string): Promise<User | undefined> {

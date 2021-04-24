@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
 import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
 import User from '@modules/users/infra/typeorm/entities/User';
+import { IPaginateUser } from '../../models/IPaginateUser';
 
 class FakeUsersRepository implements IUsersRepository {
   private users: User[] = [];
@@ -31,6 +32,21 @@ class FakeUsersRepository implements IUsersRepository {
 
   public async findAll(): Promise<User[]> {
     return this.users;
+  }
+
+  public async findAllPaginate(): Promise<IPaginateUser> {
+    const usersPaginate = {
+      from: 1,
+      to: 1,
+      per_page: 1,
+      total: 1,
+      current_page: 1,
+      prev_page: null,
+      next_page: null,
+      data: this.users,
+    };
+
+    return usersPaginate;
   }
 
   public async findByName(name: string): Promise<User | undefined> {
