@@ -4,6 +4,7 @@ import Product from '../entities/Product';
 import { IFindProducts } from '@modules/products/domain/models/IFindProducts';
 import { ICreateProduct } from '@modules/products/domain/models/ICreateProduct';
 import { IUpdateStockProduct } from '@modules/products/domain/models/IUpdateStockProduct';
+import { IProductPaginate } from '@modules/products/domain/models/IProductPaginate';
 
 class ProductsRepository implements IProductsRepository {
   private ormRepository: Repository<Product>;
@@ -58,6 +59,12 @@ class ProductsRepository implements IProductsRepository {
     const products = this.ormRepository.find();
 
     return products;
+  }
+
+  public async findAllPaginate(): Promise<IProductPaginate> {
+    const products = await this.ormRepository.createQueryBuilder().paginate();
+
+    return products as IProductPaginate;
   }
 
   public async findAllByIds(products: IFindProducts[]): Promise<Product[]> {
