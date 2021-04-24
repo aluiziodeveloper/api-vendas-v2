@@ -2,8 +2,17 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateOrderService from '@modules/orders/services/CreateOrderService';
 import ShowOrderService from '@modules/orders/services/ShowOrderService';
+import ListOrderService from '@modules/orders/services/ListOrderService';
 
 export default class OrdersController {
+  public async index(request: Request, response: Response): Promise<Response> {
+    const listOrders = container.resolve(ListOrderService);
+
+    const orders = await listOrders.execute();
+
+    return response.json(orders);
+  }
+
   public async show(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 

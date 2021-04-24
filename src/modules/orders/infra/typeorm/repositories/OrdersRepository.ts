@@ -2,6 +2,7 @@ import { getRepository, Repository } from 'typeorm';
 import Order from '../entities/Order';
 import { ICreateOrder } from '@modules/orders/domain/models/ICreateOrder';
 import { IOrdersRepository } from '@modules/orders/domain/repositories/IOrdersRepository';
+import { IOrderPaginate } from '@modules/orders/domain/models/IOrderPaginate';
 
 class OrdersRepository implements IOrdersRepository {
   private ormRepository: Repository<Order>;
@@ -16,6 +17,12 @@ class OrdersRepository implements IOrdersRepository {
     });
 
     return order;
+  }
+
+  public async findAllPaginate(): Promise<IOrderPaginate> {
+    const orders = await this.ormRepository.createQueryBuilder().paginate();
+
+    return orders as IOrderPaginate;
   }
 
   public async create({ customer, products }: ICreateOrder): Promise<Order> {
