@@ -4,7 +4,7 @@ import { IUser } from '../models/IUser';
 
 export interface IUsersRepository {
   findAll(): Promise<IUser[]>;
-  findAllPaginate(): Promise<IPaginateUser>;
+  findAllPaginate(search: string): Promise<IPaginateUser>;
   findByName(name: string): Promise<IUser | undefined>;
   findById(id: string): Promise<IUser | undefined>;
   findByEmail(email: string): Promise<IUser | undefined>;

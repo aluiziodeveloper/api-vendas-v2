@@ -1,7 +1,7 @@
 import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
 import { IPaginateUser } from '@modules/users/domain/models/IPaginateUser';
 import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, ILike, Like, Repository } from 'typeorm';
 import User from '../entities/User';
 
 class UsersRepository implements IUsersRepository {
@@ -31,8 +31,17 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
-  public async findAllPaginate(): Promise<IPaginateUser> {
-    const users = await this.ormRepository.createQueryBuilder().paginate();
+  public async findAllPaginate(search: string): Promise<IPaginateUser> {
+    let users;
+
+    if (search) {
+      users = await this.ormRepository
+        .createQueryBuilder()
+        .where({ name: Like(`%${search}%`) })
+        .paginate();
+    } else {
+      users = await this.ormRepository.createQueryBuilder().paginate();
+    }
 
     return users as IPaginateUser;
   }

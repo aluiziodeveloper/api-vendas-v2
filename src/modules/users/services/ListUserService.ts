@@ -9,8 +9,8 @@ class ListUserService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute(): Promise<IPaginateUser> {
-    const users = await this.usersRepository.findAllPaginate();
+  public async execute(search = ''): Promise<IPaginateUser> {
+    const users = await this.usersRepository.findAllPaginate(search);
 
     return users;
   }
