@@ -7,6 +7,7 @@ import { classToClass } from 'class-transformer';
 export default class UsersController {
   public async index(request: Request, response: Response): Promise<Response> {
     let search = '';
+    const sortField = String(request.query.sortField);
 
     if (request.query.search) {
       search = String(request.query.search);
@@ -14,7 +15,7 @@ export default class UsersController {
 
     const listUser = container.resolve(ListUserService);
 
-    const users = await listUser.execute(search);
+    const users = await listUser.execute(search, sortField);
 
     return response.json(classToClass(users));
   }

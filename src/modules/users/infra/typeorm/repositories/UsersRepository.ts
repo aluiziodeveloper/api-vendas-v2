@@ -31,16 +31,23 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
-  public async findAllPaginate(search: string): Promise<IPaginateUser> {
+  public async findAllPaginate(
+    search: string,
+    sortField: string,
+  ): Promise<IPaginateUser> {
     let users;
 
     if (search) {
       users = await this.ormRepository
         .createQueryBuilder()
         .where([{ name: Like(`%${search}%`) }, { email: Like(`%${search}%`) }])
+        .orderBy(sortField)
         .paginate();
     } else {
-      users = await this.ormRepository.createQueryBuilder().paginate();
+      users = await this.ormRepository
+        .createQueryBuilder()
+        .orderBy(sortField)
+        .paginate();
     }
 
     return users as IPaginateUser;
