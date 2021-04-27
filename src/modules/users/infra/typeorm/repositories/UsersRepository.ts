@@ -1,7 +1,7 @@
 import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
 import { IPaginateUser } from '@modules/users/domain/models/IPaginateUser';
 import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
-import { getRepository, ILike, Like, Repository } from 'typeorm';
+import { getRepository, ILike, In, Like, Repository } from 'typeorm';
 import User from '../entities/User';
 
 class UsersRepository implements IUsersRepository {
@@ -37,7 +37,7 @@ class UsersRepository implements IUsersRepository {
     if (search) {
       users = await this.ormRepository
         .createQueryBuilder()
-        .where({ name: Like(`%${search}%`) })
+        .where([{ name: Like(`%${search}%`) }, { email: Like(`%${search}%`) }])
         .paginate();
     } else {
       users = await this.ormRepository.createQueryBuilder().paginate();
