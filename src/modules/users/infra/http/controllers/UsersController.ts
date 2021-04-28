@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import CreateUserService from '../../../services/CreateUserService';
-import ListUserService from '../../../services/ListUserService';
+import CreateUserService from '@modules/users/services/CreateUserService';
+import ListUserService from '@modules/users/services/ListUserService';
+import ShowUserService from '@modules/users/services/ShowUserService';
 import { classToClass } from 'class-transformer';
 
 export default class UsersController {
@@ -18,6 +19,16 @@ export default class UsersController {
     const users = await listUser.execute(search, sortField);
 
     return response.json(classToClass(users));
+  }
+
+  public async show(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+
+    const showUser = container.resolve(ShowUserService);
+
+    const user = await showUser.execute({ id });
+
+    return response.json(user);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
