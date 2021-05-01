@@ -20,7 +20,11 @@ class OrdersRepository implements IOrdersRepository {
   }
 
   public async findAllPaginate(): Promise<IOrderPaginate> {
-    const orders = await this.ormRepository.createQueryBuilder().paginate();
+    const orders = await this.ormRepository
+      .createQueryBuilder('orders')
+      .leftJoinAndSelect('orders.customer', 'customer')
+      .leftJoinAndSelect('orders.order_products', 'order_products')
+      .paginate();
 
     return orders as IOrderPaginate;
   }
