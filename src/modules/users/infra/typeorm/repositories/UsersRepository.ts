@@ -1,7 +1,7 @@
 import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
 import { IPaginateUser } from '@modules/users/domain/models/IPaginateUser';
 import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
-import { getRepository, ILike, In, Like, Repository } from 'typeorm';
+import { getRepository, Like, Repository } from 'typeorm';
 import User from '../entities/User';
 
 class UsersRepository implements IUsersRepository {
