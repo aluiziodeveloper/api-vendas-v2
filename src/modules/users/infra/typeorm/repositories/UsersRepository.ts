@@ -35,22 +35,18 @@ class UsersRepository implements IUsersRepository {
     search: string,
     sortField: string,
   ): Promise<IPaginateUser> {
-    let users;
-
     if (search) {
-      users = await this.ormRepository
+      return (await this.ormRepository
         .createQueryBuilder()
         .where([{ name: Like(`%${search}%`) }, { email: Like(`%${search}%`) }])
-        .orderBy(sortField)
-        .paginate();
-    } else {
-      users = await this.ormRepository
-        .createQueryBuilder()
-        .orderBy(sortField)
-        .paginate();
+        .orderBy(`User.name`, 'ASC')
+        .paginate()) as IPaginateUser;
     }
 
-    return users as IPaginateUser;
+    return (await this.ormRepository
+      .createQueryBuilder()
+      .orderBy('User.name', 'ASC')
+      .paginate()) as IPaginateUser;
   }
 
   public async findByName(name: string): Promise<User | undefined> {
