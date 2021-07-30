@@ -38,7 +38,7 @@ class User implements IUser {
       return null;
     }
 
-    return `${process.env.APP_API_URL}/files/${this.avatar}`;
+    return `${process.env.BASE_AVATAR_URL}/${this.avatar}`;
   }
 }
 

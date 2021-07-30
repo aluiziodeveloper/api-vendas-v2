@@ -10,7 +10,7 @@ import AppError from '@shared/errors/AppError';
 import '@shared/infra/typeorm';
 import '@shared/container';
 import uploadConfig from '@config/upload';
-import rateLimiter from '@shared/infra/http/middlewares/rateLimiter';
+//import rateLimiter from '@shared/infra/http/middlewares/rateLimiter';
 
 const app = express();
 
@@ -44,6 +44,6 @@ app.use(
   },
 );
 
-app.listen(3333, () => {
-  console.log('Server started on port 3333! 🏆');
+app.listen(process.env.PORT || 3333, () => {
+  console.log(`Server started on port ${process.env.PORT || 3333}! 🏆`);
 });

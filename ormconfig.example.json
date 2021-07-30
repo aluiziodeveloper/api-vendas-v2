@@ -7,9 +7,9 @@
   "database": "apivendas",
   "entities": ["./dist/modules/**/typeorm/entities/*.js"],
   "migrations": [
-    "./dist/shared/typeorm/migrations/*.js"
+    "./dist/shared/infra/typeorm/migrations/*.js"
   ],
   "cli": {
-    "migrationsDir": "./dist/shared/typeorm/migrations"
+    "migrationsDir": "./dist/shared/infra/typeorm/migrations"
   }
 }
