@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    entrypoint: .docker/entrypoint.sh
+    container_name: apivendas-app
+    ports:
+      - '3333:3333'
+    volumes:
+      - .:/home/node/app
+    depends_on:
+      - db
+      - redis
+
+  db:
+    build: .docker/postgres
+    container_name: apivendas-db
+    restart: always
+    tty: true
+    ports:
+      - '5432:5432'
+    volumes:
+      - .docker/dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=apivendas
+
+  redis:
+    image: 'bitnami/redis:latest'
+    container_name: apivendas-redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: apivendas-pgadmin
+    tty: true
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - '8000:80'
+    depends_on:
+      - db
