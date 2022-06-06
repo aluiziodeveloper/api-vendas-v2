@@ -1,32 +1,51 @@
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import Order from '../entities/Order';
 import { ICreateOrder } from '@modules/orders/domain/models/ICreateOrder';
 import { IOrdersRepository } from '@modules/orders/domain/repositories/IOrdersRepository';
 import { IOrderPaginate } from '@modules/orders/domain/models/IOrderPaginate';
+import { dataSource } from '@shared/infra/typeorm';
+
+type SearchParams = {
+  page: number;
+  skip: number;
+  take: number;
+};
 
 class OrdersRepository implements IOrdersRepository {
   private ormRepository: Repository<Order>;
 
   constructor() {
-    this.ormRepository = getRepository(Order);
+    this.ormRepository = dataSource.getRepository(Order);
   }
 
-  public async findById(id: string): Promise<Order | undefined> {
-    const order = this.ormRepository.findOne(id, {
+  public async findById(id: string): Promise<Order | null> {
+    const order = this.ormRepository.findOne({
+      where: { id },
       relations: ['order_products', 'customer'],
     });
 
     return order;
   }
 
-  public async findAllPaginate(): Promise<IOrderPaginate> {
-    const orders = await this.ormRepository
-      .createQueryBuilder('orders')
-      .leftJoinAndSelect('orders.customer', 'customer')
-      .leftJoinAndSelect('orders.order_products', 'order_products')
-      .paginate();
+  public async findAll({
+    page,
+    skip,
+    take,
+  }: SearchParams): Promise<IOrderPaginate> {
+    const [orders, count] = await this.ormRepository
+      .createQueryBuilder()
+      .skip(skip)
+      .take(take)
+      .getManyAndCount();
 
-    return orders as IOrderPaginate;
+    const result = {
+      per_page: take,
+      total: count,
+      current_page: page,
+      data: orders,
+    };
+
+    return result;
   }
 
   public async create({ customer, products }: ICreateOrder): Promise<Order> {
