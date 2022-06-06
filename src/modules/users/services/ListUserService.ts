@@ -2,6 +2,11 @@ import { inject, injectable } from 'tsyringe';
 import { IPaginateUser } from '../domain/models/IPaginateUser';
 import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 
+interface SearchParams {
+  page: number;
+  limit: number;
+}
+
 @injectable()
 class ListUserService {
   constructor(
@@ -9,11 +14,14 @@ class ListUserService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute(
-    search = '',
-    sortField = 'name',
-  ): Promise<IPaginateUser> {
-    const users = await this.usersRepository.findAllPaginate(search, sortField);
+  public async execute({ page, limit }: SearchParams): Promise<IPaginateUser> {
+    const take = limit;
+    const skip = (Number(page) - 1) * take;
+    const users = await this.usersRepository.findAll({
+      page,
+      skip,
+      take,
+    });
 
     return users;
   }

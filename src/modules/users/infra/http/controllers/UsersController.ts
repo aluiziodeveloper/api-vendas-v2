@@ -7,16 +7,11 @@ import { classToClass } from 'class-transformer';
 
 export default class UsersController {
   public async index(request: Request, response: Response): Promise<Response> {
-    let search = '';
-    const sortField = String(request.query.sortField);
-
-    if (request.query.search) {
-      search = String(request.query.search);
-    }
-
+    const page = request.query.page ? Number(request.query.page) : 1;
+    const limit = request.query.limit ? Number(request.query.limit) : 15;
     const listUser = container.resolve(ListUserService);
 
-    const users = await listUser.execute(search, sortField);
+    const users = await listUser.execute({ page, limit });
 
     return response.json(classToClass(users));
   }
